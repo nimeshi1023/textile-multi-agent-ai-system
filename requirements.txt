@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+sqlalchemy>=2.0
+alembic
+psycopg2
+pydantic-settings
+google-genai
+streamlit
+pdfplumber
+pypdf
+python-multipart
+pytest
+httpx
