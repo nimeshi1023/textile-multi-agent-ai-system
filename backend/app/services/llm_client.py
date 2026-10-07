@@ -1,5 +1,4 @@
-from google import genai
-from google.genai import types
+from groq import Groq
 
 from app.core.config import settings
 from app.db.session import SessionLocal
@@ -12,28 +11,29 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-RETRYABLE_TERMS = [
-    "503",
-    "429",
-    "UNAVAILABLE",
-    "QUOTA",
-    "TOO MANY REQUESTS",
-    "TIMEOUT",
-    "DEADLINE",
-]
+# Callers parse the reply with json.loads, so ask for bare JSON.
+# (Groq's JSON mode also requires the word "JSON" in the messages.)
+JSON_SYSTEM_PROMPT = (
+    "You are a data extraction and analysis component in a backend system. "
+    "Respond with a single valid JSON object only, with no prose before or "
+    "after it and no Markdown code fences."
+)
 
 
 class LLMClient:
 
     def __init__(self):
-        self.client = genai.Client(
-            api_key=settings.GEMINI_API_KEY
+        # The SDK retries 408/409/429/5xx and connection errors
+        # with exponential backoff.
+        self.client = Groq(
+            api_key=settings.GROQ_API_KEY,
+            max_retries=5
         )
 
-        self.model = settings.GEMINI_MODEL
+        self.model = settings.GROQ_MODEL
 
         logger.info(
-            f"Gemini LLM initialized with model: {self.model}"
+            f"Groq LLM initialized with model: {self.model}"
         )
 
     def _log_to_db(
@@ -68,216 +68,67 @@ class LLMClient:
 
     def generate(
         self,
-        prompt: str,
-        max_retries: int = 5
+        prompt: str
     ) -> str:
 
         start_time = time.time()
-        wait_time = 3.0
 
-        for attempt in range(1, max_retries + 1):
+        try:
 
-            try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": JSON_SYSTEM_PROMPT},
+                    {"role": "user", "content": prompt}
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.0
+            )
 
-                response = self.client.models.generate_content(
-                    model=self.model,
-                    contents=prompt,
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json",
-                        temperature=0.0
-                    )
-                )
+            response_text = (
+                response.choices[0].message.content or ""
+            ).strip()
 
-                latency = (
-                    time.time() - start_time
-                ) * 1000
+            latency = (time.time() - start_time) * 1000
 
-                response_text = response.text
+            self._log_to_db(
+                prompt,
+                response_text,
+                latency,
+                "success"
+            )
 
-                self._log_to_db(
-                    prompt,
-                    response_text,
-                    latency,
-                    "success"
-                )
+            return response_text
 
-                return response_text
+        except Exception as e:
 
-            except Exception as e:
+            error_msg = str(e)
 
-                error_msg = str(e)
+            logger.error(f"Groq error: {error_msg}")
 
-                logger.error(
-                    f"Gemini error (attempt {attempt}/{max_retries}): "
-                    f"{error_msg}"
-                )
+            latency = (time.time() - start_time) * 1000
 
-                upper_error = error_msg.upper()
+            self._log_to_db(
+                prompt,
+                None,
+                latency,
+                "error",
+                error_msg
+            )
 
-                is_retryable = any(
-                    term in upper_error
-                    for term in RETRYABLE_TERMS
-                )
-
-                # Don't retry invalid model / API errors
-                if not is_retryable:
-
-                    latency = (
-                        time.time() - start_time
-                    ) * 1000
-
-                    self._log_to_db(
-                        prompt,
-                        None,
-                        latency,
-                        "error",
-                        error_msg
-                    )
-
-                    raise
-
-                if attempt < max_retries:
-
-                    logger.warning(
-                        f"Gemini temporarily unavailable. "
-                        f"Retrying in {wait_time}s..."
-                    )
-
-                    time.sleep(wait_time)
-
-                    wait_time = min(
-                        wait_time * 2,
-                        15.0
-                    )
-
-                else:
-
-                    latency = (
-                        time.time() - start_time
-                    ) * 1000
-
-                    self._log_to_db(
-                        prompt,
-                        None,
-                        latency,
-                        "error",
-                        error_msg
-                    )
-
-                    raise
-
-        raise RuntimeError(
-            "Gemini request failed after all retries."
-        )
+            raise
 
     def generate_multimodal(
         self,
         prompt: str,
         file_bytes: bytes,
-        mime_type: str,
-        max_retries: int = 5
+        mime_type: str
     ) -> str:
 
-        start_time = time.time()
-        wait_time = 3.0
-
-        for attempt in range(1, max_retries + 1):
-
-            try:
-
-                response = self.client.models.generate_content(
-                    model=self.model,
-                    contents=[
-                        types.Part.from_bytes(
-                            data=file_bytes,
-                            mime_type=mime_type
-                        ),
-                        prompt
-                    ],
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json",
-                        temperature=0.0
-                    )
-                )
-
-                latency = (
-                    time.time() - start_time
-                ) * 1000
-
-                response_text = response.text
-
-                self._log_to_db(
-                    prompt,
-                    response_text,
-                    latency,
-                    "success"
-                )
-
-                return response_text
-
-            except Exception as e:
-
-                error_msg = str(e)
-
-                logger.error(
-                    f"Gemini multimodal error "
-                    f"(attempt {attempt}/{max_retries}): "
-                    f"{error_msg}"
-                )
-
-                upper_error = error_msg.upper()
-
-                is_retryable = any(
-                    term in upper_error
-                    for term in RETRYABLE_TERMS
-                )
-
-                if not is_retryable:
-
-                    latency = (
-                        time.time() - start_time
-                    ) * 1000
-
-                    self._log_to_db(
-                        prompt,
-                        None,
-                        latency,
-                        "error",
-                        error_msg
-                    )
-
-                    raise
-
-                if attempt < max_retries:
-
-                    logger.warning(
-                        f"Gemini temporarily unavailable. "
-                        f"Retrying in {wait_time}s..."
-                    )
-
-                    time.sleep(wait_time)
-
-                    wait_time = min(
-                        wait_time * 2,
-                        15.0
-                    )
-
-                else:
-
-                    latency = (
-                        time.time() - start_time
-                    ) * 1000
-
-                    self._log_to_db(
-                        prompt,
-                        None,
-                        latency,
-                        "error",
-                        error_msg
-                    )
-
-                    raise
-
+        # Only reached for PDFs with no extractable text (scanned images).
+        # Groq's production models are text-only.
         raise RuntimeError(
-            "Gemini multimodal request failed after all retries."
+            "This PDF has no readable text (it looks like a scanned image). "
+            "Groq models can't read scanned documents - please upload a "
+            "text-based PDF or paste the order details as a message."
         )

@@ -16,6 +16,7 @@ from app.db.session import engine, SessionLocal
 # pyrefly: ignore [missing-import]
 from app.db.models import MaterialConsumption, Base
 import subprocess
+from sqlalchemy import text
 
 def create_database_if_not_exists():
     db_url = settings.DATABASE_URL
@@ -72,6 +73,11 @@ if __name__ == "__main__":
     # subprocess.run(["alembic", "upgrade", "head"], check=True)
     Base.metadata.create_all(bind=engine)
     print("Database tables created.")
+
+    # create_all doesn't add columns to existing tables
+    with engine.begin() as conn:
+        conn.execute(text("ALTER TABLE cust_ord_table ADD COLUMN IF NOT EXISTS material_name VARCHAR(50)"))
+    print("Schema columns up to date.")
     
     seed_material_consumption()
     print("Setup complete.")
