@@ -66,8 +66,14 @@ CSS = f"""
 html, body, [class*="css"], .stApp, .stMarkdown, button, input, textarea, select {{ font-family: {FONT_STACK}; }}
 .stApp {{ background: linear-gradient(180deg, {BG} 0%, {BG_END} 100%); color: {TEXT}; }}
 [data-testid="stHeader"] {{ background: transparent; }}
-#MainMenu, footer, [data-testid="stToolbar"], [data-testid="stMainMenu"], [data-testid="stAppDeployButton"],
+/* Hide the menu, Deploy button and footer. Do NOT hide the whole [data-testid="stToolbar"]:
+   it also holds the button that re-opens a collapsed sidebar. */
+#MainMenu, footer, [data-testid="stMainMenu"], [data-testid="stAppDeployButton"], [data-testid="stToolbarActions"],
 [data-testid="stDecoration"], [data-testid="stStatusWidget"] {{ display: none !important; visibility: hidden; }}
+[data-testid="stToolbar"] {{ background: transparent; }}
+[data-testid="stExpandSidebarButton"], [data-testid="stExpandSidebarButton"] * {{ color: {ACCENT} !important; }}
+[data-testid="stExpandSidebarButton"] {{ background: {SURFACE_RAISED}; border: 1px solid {ACCENT};
+                                         border-radius: 999px; box-shadow: 0 4px 12px rgba(240,147,58,0.25); }}
 .block-container {{ padding-top: 1.6rem; padding-bottom: 3rem; max-width: 1280px; }}
 h1, h2, h3, h4 {{ color: {TEXT}; letter-spacing: -0.01em; }}
 a {{ color: {ACCENT}; }}
@@ -148,6 +154,11 @@ button[data-baseweb="tab"][aria-selected="true"] {{ color: {ACCENT}; background:
 [data-testid="stSidebarNav"] a[aria-current="page"] span, [data-testid="stSidebarNavLink"][aria-current="page"] span {{
     color: #2A211A !important; font-weight: 700;
 }}
+/* Signed out there are no navigation links: hide the (empty) sidebar and its toggle.
+   Based on what is on the page right now, so it can never hide the signed-in sidebar. */
+.stApp:not(:has([data-testid="stSidebarNavLink"])) section[data-testid="stSidebar"],
+.stApp:not(:has([data-testid="stSidebarNavLink"])) [data-testid="stExpandSidebarButton"],
+.stApp:not(:has([data-testid="stSidebarNavLink"])) [data-testid="stSidebarCollapsedControl"] {{ display: none !important; }}
 .ff-sidebar-footer {{ color: {MUTED}; font-size: .78rem; text-align: center; margin-top: .6rem; }}
 
 /* ---- top bar (signed in) ---- */
@@ -189,21 +200,8 @@ button[data-baseweb="tab"][aria-selected="true"] {{ color: {ACCENT}; background:
 </style>
 """
 
-# Signed out: no sidebar at all
-PUBLIC_CSS = """
-<style>
-section[data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"], [data-testid="stExpandSidebarButton"],
-[data-testid="collapsedControl"], [data-testid="stSidebarCollapseButton"] { display: none !important; }
-</style>
-"""
-
-
 def inject_css() -> None:
     st.markdown(CSS, unsafe_allow_html=True)
-
-
-def inject_public_css() -> None:
-    st.markdown(PUBLIC_CSS, unsafe_allow_html=True)
 
 
 # ---------- HTML helpers ----------

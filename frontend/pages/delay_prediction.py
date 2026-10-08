@@ -167,32 +167,3 @@ if result:
                    f"Probability source: {risk['model']['name']} (ML model only)")
         if risk["missing_features"]:
             st.caption("Filled with safe defaults: " + ", ".join(risk["missing_features"]))
-        with st.expander("Input features"):
-            st.json(risk["input_features"])
-
-# ---------- 4. Model information ----------
-with st.expander("Model information"):
-    try:
-        info = api_get("/risk/model-info")
-        test, cv = info["test_split"], info["cross_validation"]
-        m1, m2, m3 = st.columns(3)
-        m1.metric("Accuracy (test)", f"{test['accuracy']:.3f}")
-        m2.metric("ROC-AUC (test)", f"{test['roc_auc']:.3f}")
-        m3.metric("F1 (test)", f"{test['f1']:.3f}")
-        st.write(
-            f"**Model:** {info['model_name']}  |  **Trained:** {info['trained_at']}  |  "
-            f"**Rows:** {info['row_count']:,} ({info['data_source']})"
-        )
-        st.write(
-            f"**{cv['folds']}-fold CV ROC-AUC:** {cv['roc_auc']['mean']:.3f} ± {cv['roc_auc']['std']:.3f}  |  "
-            f"**Calibrated:** {info['calibration']['used']}"
-        )
-        st.caption(info["calibration"]["reason"])
-    except httpx.ConnectError:
-        st.warning(f"Backend is not reachable at {API_URL}.")
-    except httpx.HTTPStatusError as e:
-        if e.response.status_code == 503:
-            st.warning("Model not trained yet. Train it with:")
-            st.code(TRAIN_COMMAND)
-        else:
-            st.error(f"Could not load model information: {error_detail(e)}")

@@ -95,7 +95,7 @@ def test_home_renders_without_sidebar(backend):
     text = markdown_text(at)
     assert "FABRICFLOW" in text and "Textile Multi Agent AI" in text
     assert "THE FOUR AGENTS".lower() in text.lower() and "How it works".lower() in text.lower()
-    assert 'section[data-testid="stSidebar"]' in text            # sidebar hidden when signed out
+    assert not at.sidebar.children                                 # nothing in the sidebar when signed out
     assert [b.label for b in at.button] == ["Sign In", "Sign Up", "Sign In", "Sign Up"]
     assert not any(c[1].endswith("/auth/me") for c in backend.calls)   # no token -> no backend call
 

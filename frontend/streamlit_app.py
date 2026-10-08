@@ -47,7 +47,9 @@ if manager:
     layout.render_top_bar(manager)
     layout.render_sidebar_extras()
 else:
-    theme.inject_public_css()
+    # No sidebar when signed out: the navigation is hidden and nothing is written to st.sidebar,
+    # so Streamlit does not draw one. (No CSS hiding here: a hide rule could survive the
+    # redirect after sign-in and keep the sidebar invisible.)
     page = st.navigation([HOME, SIGN_IN, SIGN_UP], position="hidden")
     if goto == "home":
         st.switch_page(HOME)
