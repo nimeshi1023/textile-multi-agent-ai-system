@@ -1,39 +1,57 @@
-import html
+"""
+FabricFlow entry point and router.
 
+Signed out: only Home, Sign In and Sign Up exist (no sidebar).
+Signed in:  Dashboard, New Order, Orders, Delay Prediction, Recommendations in the sidebar,
+            plus a top bar with the manager's details and Log out.
+Run from the project folder:  streamlit run frontend/streamlit_app.py
+"""
 import streamlit as st
 
-from auth_ui import render_user_sidebar, require_login
+st.set_page_config(page_title="FabricFlow", page_icon="🧵", layout="wide", initial_sidebar_state="expanded")
 
-st.set_page_config(page_title="FabricFlow", layout="wide")
+import auth_ui  # noqa: E402
+import layout  # noqa: E402
+import theme  # noqa: E402
 
-manager = require_login()
-render_user_sidebar()
+st.session_state[auth_ui.ROUTER_FLAG] = True
+theme.inject_css()
 
-st.sidebar.title("FabricFlow")
-st.sidebar.page_link("streamlit_app.py", label="Home")
-st.sidebar.page_link("pages/new_order.py", label="New Order")
-st.sidebar.page_link("pages/orders.py", label="Orders")
+HOME = st.Page("views/home.py", title="Home", icon=":material/home:", url_path="home", default=True)
+SIGN_IN = st.Page("views/sign_in.py", title="Sign In", icon=":material/login:", url_path="sign_in")
+SIGN_UP = st.Page("views/sign_up.py", title="Sign Up", icon=":material/person_add:", url_path="sign_up")
 
-st.title(f"Welcome, {manager['manager_id']}")
-st.caption(f"{manager['manager_type']}  ·  FabricFlow – Multi-Agent AI for Textile Production")
+DASHBOARD = st.Page("views/dashboard.py", title="Dashboard", icon=":material/space_dashboard:",
+                    url_path="dashboard", default=True)
+NEW_ORDER = st.Page("pages/new_order.py", title="New Order", icon=":material/add_circle:", url_path="new_order")
+ORDERS = st.Page("pages/orders.py", title="Orders", icon=":material/receipt_long:", url_path="orders")
+DELAY = st.Page("pages/delay_prediction.py", title="Delay Prediction", icon=":material/schedule:",
+                url_path="delay_prediction")
+RECOMMENDATIONS = st.Page("pages/recommendation.py", title="Recommendations", icon=":material/lightbulb:",
+                          url_path="recommendations")
 
-st.markdown("#### How an order flows through FabricFlow")
-steps = [
-    ("1", "Order Analysis", "Reads a customer message or PDF and extracts product, quantity, priority and deadline.",
-     "New Order"),
-    ("2", "Resource & Production", "Checks machine capacity, material stock and suppliers for the order.",
-     "New Order"),
-    ("3", "Delay Prediction", "A Random Forest model estimates the delay risk and explains the main factors.",
-     "Delay Prediction"),
-    ("4", "Recommendation", "Suggests SOP-backed actions from the knowledge base; you approve, reject or override.",
-     "Recommendation"),
-]
-for column, (number, title, text, page) in zip(st.columns(4), steps):
-    with column, st.container(border=True):
-        st.markdown(f"<div style='font-size:0.8rem;font-weight:700;color:#E0A030'>STEP {number}</div>",
-                    unsafe_allow_html=True)
-        st.markdown(f"**{html.escape(title)}**")
-        st.write(text)
-        st.caption(f"Page: {page}")
+manager, status = auth_ui.current_manager()
 
-st.info("AI agents recommend; the manager decides. Every recommended action needs your approval.")
+if status == "down":
+    st.markdown(theme.brand_title(), unsafe_allow_html=True)
+    st.error(f"The FabricFlow backend is not reachable at {auth_ui.API_URL}. "
+             "Please start it (cd backend && uvicorn app.main:app --reload --port 8000) and refresh.")
+    st.stop()
+
+goto = st.session_state.pop("ff_goto", None)
+
+if manager:
+    page = st.navigation([DASHBOARD, NEW_ORDER, ORDERS, DELAY, RECOMMENDATIONS], position="sidebar")
+    if goto == "dashboard":
+        st.switch_page(DASHBOARD)
+    layout.render_top_bar(manager)
+    layout.render_sidebar_extras()
+else:
+    theme.inject_public_css()
+    page = st.navigation([HOME, SIGN_IN, SIGN_UP], position="hidden")
+    if goto == "home":
+        st.switch_page(HOME)
+    if goto == "sign_in":
+        st.switch_page(SIGN_IN)
+
+page.run()

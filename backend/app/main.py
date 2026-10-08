@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 
-from app.api.routes import orders, production, risk, recommendation, auth
+from app.api.routes import orders, production, risk, recommendation, auth, dashboard
 from app.api.routes.auth import get_current_manager
 from app.db.session import get_db
 
@@ -24,6 +24,7 @@ app.include_router(orders.router, dependencies=protected)
 app.include_router(production.router, dependencies=protected)
 app.include_router(risk.router, dependencies=protected)
 app.include_router(recommendation.router, dependencies=protected)
+app.include_router(dashboard.router, dependencies=protected)
 
 @app.get("/health")
 def health_check(db: Session = Depends(get_db)):

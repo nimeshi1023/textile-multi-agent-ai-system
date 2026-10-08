@@ -1,0 +1,26 @@
+# FabricFlow theme (mirrors frontend/theme.py). No secrets in this file.
+[theme]
+base = "dark"
+primaryColor = "#F0933A"
+backgroundColor = "#2E2A26"
+secondaryBackgroundColor = "#433D37"
+textColor = "#F3EDE4"
+linkColor = "#F0933A"
+borderColor = "#5A524A"
+font = "Poppins, 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif"
+baseRadius = "full"
+showWidgetBorder = true
+redColor = "#E5604D"
+orangeColor = "#E8B04A"
+greenColor = "#6FBF8B"
+chartCategoricalColors = ["#F0933A", "#C9B79C", "#E8B04A", "#8FA9A0", "#D97A5B", "#9C8F80"]
+
+[theme.sidebar]
+backgroundColor = "#37322D"
+secondaryBackgroundColor = "#433D37"
+textColor = "#F3EDE4"
+borderColor = "#5A524A"
+
+[client]
+toolbarMode = "minimal"
+showSidebarNavigation = true
