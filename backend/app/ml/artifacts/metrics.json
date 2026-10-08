@@ -1,0 +1,219 @@
+{
+  "model_name": "RandomForestClassifier",
+  "trained_at": "2026-10-07T09:39:19+00:00",
+  "data_source": "postgresql: orders",
+  "row_count": 3000,
+  "class_balance": {
+    "on_time": 1776,
+    "delayed": 1224
+  },
+  "features": [
+    "quantity",
+    "days_remaining",
+    "machine_capacity_per_day",
+    "machine_current_workload_pct",
+    "available_capacity_per_day",
+    "required_production_days",
+    "material_required",
+    "material_stock_available",
+    "supplier_lead_time",
+    "supplier_reliability",
+    "historical_delay_rate_product",
+    "capacity_shortfall",
+    "tight_deadline",
+    "material_shortage",
+    "supplier_risk",
+    "production_to_deadline_ratio",
+    "product_type",
+    "priority",
+    "machine_status"
+  ],
+  "hyperparameters": {
+    "n_estimators": 300,
+    "min_samples_leaf": 3,
+    "max_features": "sqrt",
+    "class_weight": "balanced",
+    "random_state": 42
+  },
+  "cross_validation": {
+    "folds": 5,
+    "roc_auc": {
+      "mean": 0.9539,
+      "std": 0.0058
+    },
+    "f1": {
+      "mean": 0.8702,
+      "std": 0.005
+    },
+    "precision": {
+      "mean": 0.878,
+      "std": 0.0085
+    },
+    "recall": {
+      "mean": 0.8627,
+      "std": 0.0156
+    }
+  },
+  "test_split": {
+    "test_size": 0.2,
+    "n_test": 600,
+    "accuracy": 0.8867,
+    "precision": 0.8831,
+    "recall": 0.8327,
+    "f1": 0.8571,
+    "roc_auc": 0.9466,
+    "brier": 0.0852,
+    "confusion_matrix": {
+      "tn": 328,
+      "fp": 27,
+      "fn": 41,
+      "tp": 204
+    }
+  },
+  "calibration": {
+    "method": "sigmoid",
+    "used": false,
+    "brier_uncalibrated": 0.0852,
+    "brier_calibrated": 0.0859,
+    "reason": "Calibration did not lower the held-out Brier score, so the raw Random Forest is used."
+  },
+  "feature_importances": {
+    "production_to_deadline_ratio": 0.2811,
+    "tight_deadline": 0.1433,
+    "capacity_shortfall": 0.1248,
+    "required_production_days": 0.1072,
+    "available_capacity_per_day": 0.0527,
+    "days_remaining": 0.0504,
+    "quantity": 0.0395,
+    "material_required": 0.0383,
+    "machine_current_workload_pct": 0.0341,
+    "machine_capacity_per_day": 0.0222,
+    "material_shortage": 0.0171,
+    "material_stock_available": 0.0165,
+    "product_type": 0.0142,
+    "supplier_reliability": 0.0119,
+    "historical_delay_rate_product": 0.0118,
+    "machine_status": 0.0104,
+    "priority": 0.0096,
+    "supplier_lead_time": 0.0091,
+    "supplier_risk": 0.0059
+  },
+  "bias_check": {
+    "product_type": {
+      "Bedsheet Set": {
+        "n": 64,
+        "actual_delay_rate": 0.4219,
+        "mean_predicted_probability": 0.434,
+        "accuracy": 0.9688,
+        "recall": 0.9259,
+        "precision": 1.0
+      },
+      "Cotton T-Shirt": {
+        "n": 65,
+        "actual_delay_rate": 0.3692,
+        "mean_predicted_probability": 0.418,
+        "accuracy": 0.8923,
+        "recall": 0.8333,
+        "precision": 0.8696
+      },
+      "Curtain Fabric": {
+        "n": 62,
+        "actual_delay_rate": 0.4355,
+        "mean_predicted_probability": 0.4211,
+        "accuracy": 0.9194,
+        "recall": 0.8519,
+        "precision": 0.9583
+      },
+      "Denim Jeans": {
+        "n": 61,
+        "actual_delay_rate": 0.5246,
+        "mean_predicted_probability": 0.4672,
+        "accuracy": 0.9016,
+        "recall": 0.8438,
+        "precision": 0.9643
+      },
+      "Formal Shirt": {
+        "n": 64,
+        "actual_delay_rate": 0.5312,
+        "mean_predicted_probability": 0.507,
+        "accuracy": 0.875,
+        "recall": 0.8235,
+        "precision": 0.9333
+      },
+      "Polo Shirt": {
+        "n": 59,
+        "actual_delay_rate": 0.3559,
+        "mean_predicted_probability": 0.4569,
+        "accuracy": 0.8983,
+        "recall": 0.9524,
+        "precision": 0.8
+      },
+      "Saree Fabric": {
+        "n": 47,
+        "actual_delay_rate": 0.3404,
+        "mean_predicted_probability": 0.374,
+        "accuracy": 0.8511,
+        "recall": 0.8125,
+        "precision": 0.7647
+      },
+      "School Uniform": {
+        "n": 51,
+        "actual_delay_rate": 0.2941,
+        "mean_predicted_probability": 0.3015,
+        "accuracy": 0.8235,
+        "recall": 0.6667,
+        "precision": 0.7143
+      },
+      "Sportswear": {
+        "n": 63,
+        "actual_delay_rate": 0.381,
+        "mean_predicted_probability": 0.4083,
+        "accuracy": 0.8571,
+        "recall": 0.7917,
+        "precision": 0.8261
+      },
+      "Towel Set": {
+        "n": 64,
+        "actual_delay_rate": 0.3906,
+        "mean_predicted_probability": 0.3795,
+        "accuracy": 0.8594,
+        "recall": 0.76,
+        "precision": 0.8636
+      }
+    },
+    "priority": {
+      "High": {
+        "n": 131,
+        "actual_delay_rate": 0.5191,
+        "mean_predicted_probability": 0.4918,
+        "accuracy": 0.8855,
+        "recall": 0.8529,
+        "precision": 0.9206
+      },
+      "Low": {
+        "n": 216,
+        "actual_delay_rate": 0.3889,
+        "mean_predicted_probability": 0.3982,
+        "accuracy": 0.9259,
+        "recall": 0.881,
+        "precision": 0.925
+      },
+      "Medium": {
+        "n": 206,
+        "actual_delay_rate": 0.3495,
+        "mean_predicted_probability": 0.3952,
+        "accuracy": 0.8447,
+        "recall": 0.7639,
+        "precision": 0.7857
+      },
+      "Urgent": {
+        "n": 47,
+        "actual_delay_rate": 0.4468,
+        "mean_predicted_probability": 0.4271,
+        "accuracy": 0.8936,
+        "recall": 0.8095,
+        "precision": 0.9444
+      }
+    }
+  }
+}
