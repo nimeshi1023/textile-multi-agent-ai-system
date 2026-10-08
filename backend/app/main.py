@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 
-from app.api.routes import orders, production, risk, recommendation
+from app.api.routes import orders, production, risk, recommendation, auth
+from app.api.routes.auth import get_current_manager
 from app.db.session import get_db
 
 app = FastAPI(title="FabricFlow API")
@@ -16,10 +17,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(orders.router)
-app.include_router(production.router)
-app.include_router(risk.router)
-app.include_router(recommendation.router)
+# /auth/signup and /auth/login are public; every other API router needs a signed-in manager
+app.include_router(auth.router)
+protected = [Depends(get_current_manager)]
+app.include_router(orders.router, dependencies=protected)
+app.include_router(production.router, dependencies=protected)
+app.include_router(risk.router, dependencies=protected)
+app.include_router(recommendation.router, dependencies=protected)
 
 @app.get("/health")
 def health_check(db: Session = Depends(get_db)):

@@ -295,7 +295,7 @@ def test_scenario_risky_order_is_high(bundle):
 
 # ---------- API ----------
 @pytest.fixture
-def client():
+def client(override_auth):   # run as a signed-in test manager (see conftest.py)
     from fastapi.testclient import TestClient
     from app.main import app
     return TestClient(app)

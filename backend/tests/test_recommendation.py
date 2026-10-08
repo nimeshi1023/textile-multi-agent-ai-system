@@ -350,7 +350,7 @@ def test_scenarios_also_work_with_tfidf_fallback(tfidf):
 
 # ---------- API ----------
 @pytest.fixture
-def client():
+def client(override_auth):   # run as a signed-in test manager (see conftest.py)
     from fastapi.testclient import TestClient
     from app.main import app
     return TestClient(app)

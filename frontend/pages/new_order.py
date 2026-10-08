@@ -2,6 +2,10 @@ import streamlit as st
 import httpx
 from datetime import date
 from api_client import analyze_message, analyze_pdf, create_order, analyze_resources
+from auth_ui import require_login, render_user_sidebar
+
+require_login()
+render_user_sidebar()
 st.title("New Order")
 
 mode = st.radio("Input Method", ["Type a message", "Upload PDF"])

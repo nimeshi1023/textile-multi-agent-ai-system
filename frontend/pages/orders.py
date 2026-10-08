@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 from api_client import get_orders, delete_order
+from auth_ui import require_login, render_user_sidebar
 
+require_login()
+render_user_sidebar()
 st.title("Orders")
 
 col1, col2 = st.columns(2)

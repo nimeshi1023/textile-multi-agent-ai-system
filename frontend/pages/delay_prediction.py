@@ -3,6 +3,11 @@ import httpx
 import pandas as pd
 import streamlit as st
 
+from auth_ui import auth_headers, render_user_sidebar, require_login
+
+require_login()
+render_user_sidebar()
+
 API_URL = "http://localhost:8000"
 TRAIN_COMMAND = "cd backend && python -m app.ml.train"
 BACKEND_COMMAND = "cd backend && uvicorn app.main:app --reload --port 8000"
@@ -12,13 +17,13 @@ st.title("Delay Prediction")
 
 
 def api_get(path: str):
-    response = httpx.get(f"{API_URL}{path}", timeout=30.0)
+    response = httpx.get(f"{API_URL}{path}", headers=auth_headers(), timeout=30.0)
     response.raise_for_status()
     return response.json()
 
 
 def api_post(path: str, payload: dict, timeout=60.0):
-    response = httpx.post(f"{API_URL}{path}", json=payload, timeout=timeout)
+    response = httpx.post(f"{API_URL}{path}", json=payload, headers=auth_headers(), timeout=timeout)
     response.raise_for_status()
     return response.json()
 
