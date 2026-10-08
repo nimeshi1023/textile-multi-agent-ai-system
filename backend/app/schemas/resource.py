@@ -8,6 +8,7 @@ class ResourceAnalyzeRequest(BaseModel):
     quantity: Optional[int] = None
     deadline_date: Optional[date] = None
     material_name: Optional[str] = None
+    material_required: Optional[float] = None   # as confirmed on the order (stated or estimated)
     priority: Optional[str] = None
     failed_machine_id: Optional[str] = None
 
@@ -38,6 +39,8 @@ class ResourceCalculations(BaseModel):
     capacity_in_deadline: float
     capacity_shortfall: float
     tight_deadline: bool
+    # where material_required came from: "order" | "estimated" | "usage_per_unit" | "missing"
+    material_required_source: Optional[str] = None
 
 class ResourceAnalyzeResponse(BaseModel):
     order_id: str

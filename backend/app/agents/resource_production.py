@@ -15,6 +15,7 @@ from app.schemas.resource import (
 )
 from app.db.models import CustOrd
 from app.services.llm_client import LLMClient
+from app.services.material_service import MaterialService
 
 logger = logging.getLogger(__name__)
 
@@ -52,10 +53,12 @@ class ResourceProductionAgent:
             if order:
                 result['order'] = {
                     'order_id': order.cus_ord_id,
+                    'product_type': order.product_type,
                     'quantity': order.quantity,
                     'deadline_date': order.deadline_date,
                     'order_date': order.order_date,
-                    'material_name': order.material_name
+                    'material_name': order.material_name,
+                    'material_required': order.material_required
                 }
             else:
                 # Mock if not found
@@ -69,10 +72,12 @@ class ResourceProductionAgent:
         else:
             result['order'] = {
                 'order_id': req.order_id or "UNKNOWN",
+                'product_type': req.product_type,
                 'quantity': req.quantity,
                 'deadline_date': req.deadline_date,
                 'order_date': date.today(),
-                'material_name': req.material_name
+                'material_name': req.material_name,
+                'material_required': req.material_required
             }
 
         # Material & Supplier
@@ -161,10 +166,9 @@ class ResourceProductionAgent:
         
         days_remaining = (order['deadline_date'] - order['order_date']).days
         
-        material_required = 0.0
+        material_required, material_source = self.resolve_material_required(order, mat)
         material_available = 0.0
         if mat:
-            material_required = float(order['quantity']) * float(mat.usage_per_unit)
             material_available = float(mat.stock_qty) - material_required
             if material_available < 0:
                 issues.append("MATERIAL_SHORTAGE")
@@ -207,9 +211,37 @@ class ResourceProductionAgent:
             required_production_days=required_production_days,
             capacity_in_deadline=capacity_in_deadline,
             capacity_shortfall=capacity_shortfall,
-            tight_deadline=tight_deadline
+            tight_deadline=tight_deadline,
+            material_required_source=material_source
         )
         return calcs, issues
+
+    def resolve_material_required(self, order: Dict[str, Any], mat) -> tuple[float, str]:
+        """Same material_required as the Order Analysis step:
+        1. the amount on the order (stated by the customer, or estimated and confirmed by the manager),
+        2. otherwise the same estimate the order step uses (quantity x consumption_per_piece
+           from material_consumption, via MaterialService),
+        3. last resort: quantity x usage_per_unit of the material."""
+        stated = order.get('material_required')
+        if stated is not None and float(stated) > 0:
+            return float(stated), "order"
+
+        if order.get('product_type') and order.get('quantity'):
+            for attempt in range(2):
+                try:
+                    estimate = MaterialService.estimate_material(self.db, order['product_type'], int(order['quantity']))
+                    if estimate is not None:
+                        return float(estimate), "estimated"
+                    break
+                except Exception as e:
+                    # An earlier failed query (e.g. the machine lookup) leaves the read-only
+                    # transaction aborted: roll it back and try once more.
+                    logger.error(f"Material estimate failed (attempt {attempt + 1}): {e}")
+                    self.db.rollback()
+
+        if mat and order.get('quantity'):
+            return float(order['quantity']) * float(mat.usage_per_unit), "usage_per_unit"
+        return 0.0, "missing"
 
     def explain(self, data: Dict[str, Any], calcs: ResourceCalculations, issues: List[str]) -> tuple[str, str]:
         order = data['order']
