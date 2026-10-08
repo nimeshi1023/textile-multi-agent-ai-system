@@ -1,0 +1,32 @@
+Document ID: KB006
+Category: Material Shortage
+Title: General Material Shortage Protocol
+Tags: material shortage, raw material, inventory
+------------------------------------------------------------
+
+When stock for a required material falls below the quantity needed for confirmed orders, the system should first check if a substitute material of comparable grade is available in inventory. If no substitute exists, an emergency purchase request should be raised with the primary supplier. If the primary supplier's lead time exceeds the order's remaining days, the Recommendation Agent should evaluate an alternate supplier or propose adjusting the order quantity or deadline in consultation with the customer.
+
+
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+
+Document ID: KB007
+Category: Material Shortage
+Title: Cotton Yarn Shortage Handling
+Tags: material shortage, cotton yarn
+------------------------------------------------------------
+
+Cotton yarn shortages are common during peak seasons. If cotton yarn stock is insufficient for an order, check whether a blended yarn of similar count and strength can be substituted without violating the customer's fabric specification. If substitution is not permitted, place an urgent order with the fastest available supplier and inform the manager of the expected delay so a customer notification can be prepared in advance.
+
+
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+
+
+Document ID: KB008
+Category: Material Shortage
+Title: Emergency Local Purchase Procedure
+Tags: material shortage, emergency purchase, procurement
+------------------------------------------------------------
+
+When a material shortage threatens an order with less than 5 days of slack remaining, the procurement team is authorized to make an emergency local purchase at a premium price, bypassing the standard multi-quote procurement process, provided the additional cost is under the manager's pre-approved emergency budget threshold. This procedure exists specifically to protect near-deadline orders from otherwise avoidable delays.

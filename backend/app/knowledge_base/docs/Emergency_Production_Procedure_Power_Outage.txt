@@ -1,0 +1,19 @@
+Document ID: KB024
+Category: Emergency Procedures
+Title: Emergency Production Procedure - Power Outage
+Tags: emergency, power outage, disruption
+------------------------------------------------------------
+
+In the event of an extended power outage, all in-progress dyeing and finishing batches sensitive to timing must be checked for spoilage risk first. Backup generator capacity should be prioritized for machines with batches already in process rather than starting new jobs. Orders affected by outage downtime should have their risk score recalculated once power is restored and actual lost hours are known.
+
+
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+
+Document ID: KB025
+Category: Emergency Procedures
+Title: Emergency Procedure - Critical Machine Fleet Failure
+Tags: emergency, machine failure, capacity shortfall
+------------------------------------------------------------
+
+If multiple machines of the same type fail simultaneously (e.g., due to a power surge), the factory should immediately assess total lost capacity and re-run delay risk predictions for all orders assigned to that machine type. Orders newly pushed into high-risk status should be surfaced to the manager as a batch, with outsourcing and overtime options presented together rather than resolved order-by-order, to make the most efficient use of limited recovery capacity.

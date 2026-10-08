@@ -1,0 +1,41 @@
+Document ID: KB013
+Category: Quality Control
+Title: Quality Rework SOP - Fabric Defects
+Tags: quality, rework, fabric defect
+------------------------------------------------------------
+
+Fabric batches with visible defects (weave inconsistency, color variation, holes) exceeding the acceptable defect threshold must be pulled from the production line before cutting begins. Minor defects can be corrected through localized rework (patching, re-dyeing a section); major defects require the batch to be rejected and replaced from stock or reordered. Rework time should be added to the production schedule and flagged to the Delay Prediction Agent as it consumes machine time originally allocated to the next order.
+
+
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+
+Document ID: KB014
+Category: Quality Control
+Title: Quality Rework SOP - Stitching Defects
+Tags: quality, rework, stitching defect
+------------------------------------------------------------
+
+Garments failing stitching inspection (loose seams, misaligned panels, skipped stitches) should be routed to the rework station rather than the packing line. A dedicated rework team should aim to clear rework batches within 24 hours to avoid compounding delay on the original order. If the rework backlog exceeds capacity, additional temporary staff should be assigned from the workforce pool.
+
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+
+Document ID: KB015
+Category: Quality Control
+Title: Quality Control Inspection Checklist
+Tags: quality, inspection, checklist
+------------------------------------------------------------
+
+Every batch must be inspected at three checkpoints: post-dyeing (color and shade consistency), post-cutting (measurement accuracy), and post-sewing (stitching and finishing quality). Inspection results should be logged against the order ID so that recurring defect patterns for a specific product type or machine can be identified and addressed at the root cause rather than repeatedly reworked.
+
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+
+Document ID: KB016
+Category: Quality Control
+Title: Rework vs Reject Decision Policy
+Tags: quality, rework, reject, decision policy
+------------------------------------------------------------
+
+A defective unit should be sent for rework if the correction cost and time are less than 30% of the unit's original production cost and time, and the defect does not affect structural integrity or safety compliance. Otherwise, the unit should be rejected and replaced from buffer stock or a new production run. This threshold prevents excessive rework time from silently eating into the schedule buffer of near-deadline orders.

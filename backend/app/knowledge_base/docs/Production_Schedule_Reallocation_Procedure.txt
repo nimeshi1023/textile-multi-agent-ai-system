@@ -1,0 +1,30 @@
+Document ID: KB017
+Category: Production Scheduling
+Title: Production Schedule Reallocation Procedure
+Tags: scheduling, capacity shortfall, reallocation
+------------------------------------------------------------
+
+When a high-priority or high-risk order requires more machine time than currently allocated, the production planner may reallocate capacity from lower-priority orders with larger deadline slack. Reallocation decisions must consider each affected order's remaining days and current risk score so that resolving one order's risk does not create a new risk for another order.
+
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+
+Document ID: KB018
+Category: Production Scheduling
+Title: Overtime and Extra Shift Authorization Policy
+Tags: overtime, extra shift, capacity
+------------------------------------------------------------
+
+For orders flagged as high delay risk due to capacity shortfall, the production manager may authorize an overtime shift or an additional weekend shift, provided the additional labor cost is justified against the cost of a missed deadline (e.g., contractual penalty or customer relationship impact). Overtime should be treated as a short-term mitigation, not a routine capacity planning tool.
+
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+
+
+Document ID: KB019
+Category: Production Scheduling
+Title: Order Prioritization Policy for Rush Orders
+Tags: prioritization, rush order, priority
+------------------------------------------------------------
+
+Orders marked 'Urgent' or 'High' priority should be scheduled ahead of 'Medium' and 'Low' priority orders on shared machines, as long as this does not push a previously on-track order into high-risk status. If prioritizing a rush order would delay another order that is already tight on time, the decision must be escalated to the manager rather than made automatically.

@@ -1,0 +1,52 @@
+Document ID: KB001
+Category: Machine Failure
+Title: Weaving Loom Breakdown Procedure
+Tags: machine failure, weaving loom, capacity shortfall
+------------------------------------------------------------
+
+If a weaving loom stops functioning, the operator must immediately log the fault in the maintenance system and notify the shift supervisor. The Resource & Production Agent should mark the machine status as 'Under Maintenance' and recalculate available capacity excluding this unit. If the maintenance team estimates downtime under 4 hours, orders assigned to this loom may wait. If downtime exceeds 4 hours, the order should be reassigned to another available loom with sufficient capacity, or flagged to the Recommendation Agent for schedule adjustment or outsourcing consideration.
+
+
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+
+Document ID: KB002
+Category: Machine Failure
+Title: Knitting Machine Malfunction Response
+Tags: machine failure, knitting machine
+------------------------------------------------------------
+
+On detecting irregular stitch patterns or a full stop on a knitting machine, production staff must halt the machine and inspect the yarn tension and needle bed. Minor faults (needle replacement, tension adjustment) should be resolved on-site within 1-2 hours. Major faults (motor or drive failure) require the maintenance vendor to be called and the affected order to be reassigned to a backup knitting machine if the deadline is tight. Any reassignment must be logged so the Delay Prediction Agent can update capacity assumptions.
+
+
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+
+Document ID: KB003
+Category: Machine Failure
+Title: Dyeing Unit Malfunction Protocol
+Tags: machine failure, dyeing unit, quality risk
+------------------------------------------------------------
+
+A dyeing unit malfunction (temperature control failure, uneven color batches) poses both a delay risk and a quality risk. The batch in progress must be inspected before proceeding; if color consistency fails quality checks, the batch should be sent to rework rather than shipped. Production planning should hold downstream cutting and sewing operations for that batch until dyeing is confirmed acceptable, and the schedule should be adjusted to prevent a bottleneck at the next stage.
+
+
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+
+Document ID: KB004
+Category: Machine Failure
+Title: Sewing Line Breakdown Handling
+Tags: machine failure, sewing line
+------------------------------------------------------------
+
+If one or more sewing machines on a line become non-functional, the line supervisor should redistribute workers to operational machines to maintain partial output rather than stopping the entire line. If more than 30% of a line's machines are down, the order should be evaluated for partial outsourcing to a subcontractor to protect the deadline. All downtime should be recorded against the specific order ID for traceability.
+
+
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+
+
+
+
+

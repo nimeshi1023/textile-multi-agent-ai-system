@@ -1,0 +1,7 @@
+Document ID: KB020
+Category: Outsourcing
+Title: Outsourcing and Subcontracting Procedure
+Tags: outsourcing, subcontracting, capacity shortfall
+------------------------------------------------------------
+
+When in-house capacity cannot meet an order's deadline even after schedule reallocation and overtime, part of the order may be outsourced to a pre-approved subcontractor factory. The subcontractor's quality standards and lead time must be verified before transferring work, and outsourced units must still pass the standard quality inspection checkpoints before being merged back into the shipment.

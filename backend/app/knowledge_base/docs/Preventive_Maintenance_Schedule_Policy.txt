@@ -1,0 +1,7 @@
+Document ID: KB005
+Category: Maintenance
+Title: Preventive Maintenance Schedule Policy
+Tags: maintenance, capacity planning, prevention
+------------------------------------------------------------
+
+All production machines must undergo preventive maintenance according to their manufacturer-recommended interval, tracked in the maintenance calendar. Machines nearing their maintenance due date should not be assigned to orders with tight deadlines, since a scheduled or unscheduled stoppage during production would create delay risk. The Resource & Production Agent should treat 'maintenance due within 3 days' as a soft capacity constraint when allocating machines to new orders.

@@ -1,0 +1,7 @@
+Document ID: KB023
+Category: Customer Management
+Title: Deadline Extension Negotiation Procedure
+Tags: customer communication, deadline extension, negotiation
+------------------------------------------------------------
+
+If all internal mitigation options (reallocation, overtime, outsourcing) are insufficient to meet a deadline, the account manager should proactively contact the customer before the deadline is missed, present the reason and the revised delivery estimate, and offer a partial shipment of completed units if feasible. Early communication is preferred over a silent missed deadline, as it preserves customer trust.

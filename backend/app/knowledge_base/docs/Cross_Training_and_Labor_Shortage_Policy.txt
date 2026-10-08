@@ -1,0 +1,7 @@
+Document ID: KB026
+Category: Workforce Management
+Title: Cross-Training and Labor Shortage Policy
+Tags: labor shortage, cross-training, workforce
+------------------------------------------------------------
+
+To reduce delay risk from worker absenteeism, a portion of production staff should be cross-trained across at least two adjacent process stages (e.g., cutting and sewing). When a shortage of trained workers threatens to slow a stage, cross-trained staff from a lower-demand stage should be temporarily reassigned rather than leaving the bottleneck stage understaffed.

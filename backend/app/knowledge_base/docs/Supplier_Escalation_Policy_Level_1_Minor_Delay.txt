@@ -1,0 +1,41 @@
+Document ID: KB009
+Category: Supplier Management
+Title: Supplier Escalation Policy - Level 1 (Minor Delay)
+Tags: supplier, escalation policy, minor delay
+------------------------------------------------------------
+
+If a supplier's delivery is delayed by 1-3 days beyond the agreed lead time, the supply-chain coordinator should contact the supplier directly to confirm a revised delivery date and assess impact on affected orders. No further escalation is needed unless the delay recurs more than twice in a rolling 3-month period, in which case the supplier's reliability score should be reduced in the system.
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+Document ID: KB010
+Category: Supplier Management
+Title: Supplier Escalation Policy - Level 2 (Major Delay)
+Tags: supplier, escalation policy, major delay
+------------------------------------------------------------
+
+If a supplier delay exceeds 4 days or directly threatens a customer deadline, the issue must be escalated to the production manager immediately. The manager should evaluate activating an alternate supplier from the approved supplier list, splitting the material order across two suppliers, or adjusting the affected order's schedule. All Level 2 escalations must be documented with the reason, decision taken, and outcome for future supplier performance review.
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+Document ID: KB011
+Category: Supplier Management
+Title: Alternate Supplier Activation Procedure
+Tags: supplier, alternate supplier, material shortage
+------------------------------------------------------------
+
+Each material category should have at least one pre-approved alternate supplier on file with agreed pricing and lead times. When the primary supplier cannot meet a required delivery date, the alternate supplier can be activated without a new approval cycle, provided the material specification and quality certification are already on record. This reduces the time lost to standard vendor onboarding during a supply-chain disruption.
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+Document ID: KB012
+Category: Supplier Management
+Title: Supplier Performance Review Policy
+Tags: supplier, reliability score, performance review
+------------------------------------------------------------
+
+Suppliers should be reviewed quarterly on on-time delivery rate, quality rejection rate, and responsiveness to escalations. A supplier whose reliability score falls below 0.6 should be flagged as high-risk in the system, and new orders should preferentially route to alternate suppliers for that material until performance improves.
+

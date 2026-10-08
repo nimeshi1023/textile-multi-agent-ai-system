@@ -1,0 +1,19 @@
+Document ID: KB021
+Category: Capacity Planning
+Title: Capacity Planning Guideline
+Tags: capacity planning, machine capacity
+------------------------------------------------------------
+
+Machine capacity should never be booked above 85% of theoretical maximum for planning purposes, to leave buffer for minor breakdowns, rework, and unexpected rush orders. Orders that would push a machine's booked capacity above this threshold should trigger a review of whether the order needs to be split across machines or scheduled with a later start date.
+
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+Document ID: KB022
+Category: Capacity Planning
+Title: Workload Balancing Across Machines
+Tags: workload, capacity, balancing
+------------------------------------------------------------
+
+When multiple machines of the same type are available, new orders should be assigned to the machine with the lowest current workload percentage rather than always defaulting to a single preferred machine. This prevents a single machine from becoming a bottleneck while others sit underutilized, and reduces the overall probability of capacity-driven delay across the factory.
+
