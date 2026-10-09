@@ -4,6 +4,7 @@ import httpx
 import pandas as pd
 import streamlit as st
 
+# Import authentication helpers
 from auth_ui import auth_headers, render_user_sidebar, require_login
 
 require_login()
