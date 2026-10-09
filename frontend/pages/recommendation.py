@@ -1,3 +1,5 @@
+# Import libraries for API communication, data handling, and UI development
+
 import httpx
 import pandas as pd
 import streamlit as st
