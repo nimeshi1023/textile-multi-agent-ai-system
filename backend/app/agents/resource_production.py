@@ -23,6 +23,17 @@ logger = logging.getLogger(__name__)
 RELIABILITY_THRESHOLD = 0.8
 MIN_CAPACITY_EPSILON = 0.001
 
+
+def _fmt2(value) -> str:
+    """Number with two decimal places and thousands separators, e.g. 1170.3999 -> '1,170.40'."""
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return str(value)
+    if number in (float("inf"), float("-inf")):
+        return "∞"
+    return f"{number:,.2f}"
+
 class ResourceProductionAgent:
     def __init__(self, db: Session):
         self.db = db
@@ -257,21 +268,26 @@ class ResourceProductionAgent:
         tight = calcs.tight_deadline
         iss_str = ", ".join(issues)
 
+        # All numbers are shown with two decimal places (e.g. 1,170.40 instead of 1170.3999999999996)
+        cap_s, req_s, avail_s, short_s = (_fmt2(mch_cap), _fmt2(mat_req), _fmt2(mat_avail), _fmt2(mat_short))
+        days_s, qty_s = _fmt2(req_days), _fmt2(order['quantity'])
+
         template_text = (
-            f"Machine capacity is {mch_cap}/day (status: {mch_stat}). "
-            f"Material required is {mat_req}, available {mat_avail} (shortage: {mat_short}). "
-            f"Production needs {req_days:.2f} days. Deadline tight: {tight}. Issues: {iss_str}."
+            f"Machine capacity is {cap_s}/day (status: {mch_stat}). "
+            f"Material required is {req_s}, available {avail_s} (shortage: {short_s}). "
+            f"Production needs {days_s} days. Deadline tight: {tight}. Issues: {iss_str}."
         )
 
         prompt = f"""
         You are a Textile Resource and Production Agent.
         Explain the following resource analysis to a production manager.
         All numbers below are verified. Do NOT change them, recalculate them or invent data.
+        Write every number exactly as given, with two decimal places.
 
-        ORDER: quantity {order['quantity']} units, deadline in {calcs.days_remaining} days
-        MACHINE: daily available capacity {mch_cap} units, status {mch_stat}
-        MATERIAL: required {mat_req}, available {mat_avail} (shortage {mat_short})
-        CALCULATED: required production days {req_days:.2f}, tight_deadline {str(tight).lower()}
+        ORDER: quantity {qty_s} units, deadline in {calcs.days_remaining} days
+        MACHINE: daily available capacity {cap_s} units, status {mch_stat}
+        MATERIAL: required {req_s}, available {avail_s} (shortage {short_s})
+        CALCULATED: required production days {days_s}, tight_deadline {str(tight).lower()}
         DETECTED ISSUES: {iss_str}
 
         Write a clear explanation (max 120 words) covering:
@@ -291,8 +307,11 @@ class ResourceProductionAgent:
             parsed = json.loads(resp.strip())
             
             # Simple validation: ensure some numbers exist in the output text to verify LLM didn't hallucinate
-            if str(int(mat_req)) in parsed.get("explanation", "") or str(order['quantity']) in parsed.get("explanation", ""):
-                return parsed.get("explanation", template_text), "llm"
+            explanation = parsed.get("explanation", "")
+            expected = [req_s, req_s.replace(",", ""), qty_s, qty_s.replace(",", ""),
+                        str(int(mat_req)), str(order['quantity'])]
+            if any(number in explanation for number in expected):
+                return explanation or template_text, "llm"
             else:
                 return template_text, "template"
         except Exception as e:
