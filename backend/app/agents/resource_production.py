@@ -58,7 +58,7 @@ class ResourceProductionAgent:
     def fetch_data(self, req: ResourceAnalyzeRequest) -> Dict[str, Any]:
         result = {}
         
-        # Load Order
+        # Load Orders
         if req.order_id and not req.quantity:
             order = self.db.query(CustOrd).filter(CustOrd.cus_ord_id == req.order_id).first()
             if order:
