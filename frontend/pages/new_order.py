@@ -8,6 +8,7 @@ require_login()
 render_user_sidebar()
 st.title("New Order")
 
+//upload pdf
 mode = st.radio("Input Method", ["Type a message", "Upload PDF"])
 
 if "analysis" not in st.session_state:
