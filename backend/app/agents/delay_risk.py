@@ -10,6 +10,7 @@ Resource Agent result (JSON) + PostgreSQL facts
 
 The agent is read-only: it never writes to the database.
 """
+#
 import json
 import logging
 import os
@@ -75,7 +76,7 @@ class DelayRiskAgent:
         self.db = db
         self.model_path = model_path
 
-    # ---------- entry point ----------
+    # ---------- entry point -----------------
     def run(
         self,
         order_id: Optional[str] = None,
