@@ -91,7 +91,7 @@ class ResourceProductionAgent:
                 'material_required': req.material_required
             }
 
-        # Material & Supplier
+        # Material & Suppliers
         mat_name = result['order']['material_name']
         if mat_name:
             mat_query = text("""
