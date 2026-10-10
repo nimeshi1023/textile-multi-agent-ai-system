@@ -58,7 +58,7 @@ class ResourceProductionAgent:
     def fetch_data(self, req: ResourceAnalyzeRequest) -> Dict[str, Any]:
         result = {}
         
-        # Load Order
+        # Load Orders
         if req.order_id and not req.quantity:
             order = self.db.query(CustOrd).filter(CustOrd.cus_ord_id == req.order_id).first()
             if order:
@@ -91,7 +91,7 @@ class ResourceProductionAgent:
                 'material_required': req.material_required
             }
 
-        # Material & Supplier
+        # Material & Suppliers
         mat_name = result['order']['material_name']
         if mat_name:
             mat_query = text("""
@@ -137,7 +137,7 @@ class ResourceProductionAgent:
                     supplier_id="SUP-01"
                 )
 
-        # Machine
+        # Machine details
         try:
             mch_query = text("""
                 SELECT machine_id, machine_capacity_per_day, machine_current_workload_pct, status 
@@ -258,7 +258,7 @@ class ResourceProductionAgent:
         order = data['order']
         mch = data.get('machine')
         
-        # Template Fallback
+        # Template fallback
         mch_cap = mch.machine_capacity_per_day if mch else 0
         mch_stat = mch.status if mch else "Unavailable"
         mat_req = calcs.material_required

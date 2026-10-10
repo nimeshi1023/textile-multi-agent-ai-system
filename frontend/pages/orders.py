@@ -22,7 +22,7 @@ try:
         df = pd.DataFrame(orders)
         st.dataframe(df)
         
-        # Simple delete functionality
+        # Simple Delete functionality
         del_id = st.text_input("Enter Order ID to delete")
         if st.button("Delete"):
             try:
