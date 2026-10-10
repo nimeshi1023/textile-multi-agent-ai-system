@@ -71,6 +71,7 @@ class InvalidRiskInputError(ValueError):
     pass
 
 
+# Main class responsible for predicting order delay risk using a trained ML model.
 class DelayRiskAgent:
     def __init__(self, db: Session, model_path=None):
         self.db = db
@@ -83,6 +84,7 @@ class DelayRiskAgent:
         resource_result: Optional[Dict[str, Any]] = None,
         order: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
+        # Load the trained model and coordinate the complete delay prediction workflow.
         bundle = predictor.load_model(self.model_path)   # fails fast if not trained
 
         try:
@@ -120,7 +122,7 @@ class DelayRiskAgent:
         # New transaction in READ ONLY mode: PostgreSQL rejects any write in it.
         self.db.rollback()
         self.db.execute(text("SET TRANSACTION READ ONLY"))
-
+# Retrieve order details from PostgreSQL using a read-only database transaction.
     def get_order_facts(self, order_id: str) -> Optional[Dict[str, Any]]:
         self._read_only()
         row = self.db.execute(
@@ -131,7 +133,7 @@ class DelayRiskAgent:
             {"oid": order_id},
         ).mappings().fetchone()
         return dict(row) if row else None
-
+# Call the Resource & Production Agent to analyze machine capacity and material availability.
     def get_resource_result(self, order_id: str) -> Dict[str, Any]:
         """Run the existing Resource & Production Agent (imported, unchanged).
 
@@ -154,7 +156,7 @@ class DelayRiskAgent:
                 explanation_source="template",
             )
         return result.model_dump()
-
+# Calculate the historical delay rate for the product to support accurate risk prediction.
     def get_historical_rate(self, product_type: Optional[str]) -> float:
         """Historical delay rate of the product from the `orders` table.
 
@@ -185,6 +187,7 @@ class DelayRiskAgent:
         historical_rate: Optional[float],
         bundle: Optional[Dict[str, Any]] = None,
     ) -> Tuple[Dict[str, Any], List[str]]:
+        # Convert order and resource information into the features required by the ML model.
         features, missing = features_from_resource_result(resource_result, order_facts, historical_rate)
 
         if len(missing) > MAX_MISSING_FEATURES:
@@ -206,7 +209,7 @@ class DelayRiskAgent:
     def predict(self, features: Dict[str, Any], bundle: Optional[Dict[str, Any]] = None) -> float:
         bundle = bundle or predictor.load_model(self.model_path)
         return predictor.predict_proba(bundle, to_model_frame(features))
-
+# Classify the predicted delay probability into Low, Medium, or High risk.
     @staticmethod
     def classify_risk(probability: float) -> str:
         if probability <= LOW_MAX:
@@ -232,7 +235,7 @@ class DelayRiskAgent:
         except Exception as e:   # 401, 429, timeout, bad output ... -> template
             logger.warning(f"LLM explanation failed, using template: {e}")
             return template, "template"
-
+# Generate a human-readable explanation using the prediction and its most influential factors.
     @staticmethod
     def template_explanation(
         probability: float,
