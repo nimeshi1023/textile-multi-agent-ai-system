@@ -10,6 +10,7 @@ from auth_ui import auth_headers, render_user_sidebar, require_login
 require_login()
 render_user_sidebar()
 
+#run localy
 API_URL = "http://localhost:8000"
 BUILD_COMMAND = "cd backend && python -m app.ir.build_index"
 TRAIN_COMMAND = "cd backend && python -m app.ml.train"
