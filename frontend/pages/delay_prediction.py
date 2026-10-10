@@ -5,6 +5,8 @@ import streamlit as st
 
 from auth_ui import auth_headers, render_user_sidebar, require_login
 
+# 1. Authenticate the user and display the user sidebar
+
 require_login()
 render_user_sidebar()
 
@@ -68,6 +70,8 @@ selected = st.selectbox(
 )
 
 # ---------- 2. Resource Agent -> Delay Risk Agent ----------
+
+#  Run the Resource & Production Agent and Delay Risk Agent to analyze resources and predict delay risk
 if st.button("Run Delay Prediction", type="primary"):
     st.session_state.pop("delay_result", None)
     order_id = selected["cus_ord_id"]
@@ -100,7 +104,9 @@ if st.button("Run Delay Prediction", type="primary"):
             else:
                 st.error(f"Delay Risk Agent failed ({code}): {detail}")
 
-# ---------- 3. Results ----------
+# ---------- 3.  Final Results ----------
+
+#  Display the prediction results, including resource availability, delay probability, risk factors, and explanations
 result = st.session_state.get("delay_result")
 if result:
     resource, risk = result["resource"], result["risk"]
