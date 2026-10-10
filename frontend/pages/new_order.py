@@ -4,7 +4,10 @@ from datetime import date
 from api_client import analyze_message, analyze_pdf, create_order, analyze_resources
 from auth_ui import require_login, render_user_sidebar
 
+# Check whether the user is logged in
 require_login()
+
+# Display the logged-in user's sidebar
 render_user_sidebar()
 st.title("New Order")
 
