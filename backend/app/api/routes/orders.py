@@ -10,8 +10,10 @@ from app.services.pdf_service import PDFService
 from app.agents.order_analysis import OrderAnalysisAgent
 from datetime import date
 
+# Create an API router for order-related endpoints
 router = APIRouter(prefix="/orders", tags=["orders"])
 
+# Initialize the LLM client and order analysis agent
 llm_client = LLMClient()
 agent = OrderAnalysisAgent(llm_client)
 
