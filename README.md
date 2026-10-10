@@ -270,3 +270,12 @@ pytest
 
 The tests cover the agents, the API, authentication and the retrieval layer. Use the Swagger UI at `/docs` for manual API checks.
 
+## Known Limitations
+
+- The ML model is trained on a prototype dataset, so real deployments need more representative historical data.
+- Unfamiliar product types are scored without a warning; the model cannot learn from categories it has not seen.
+- The login session ends when the browser page is refreshed (the token is kept in the Streamlit session only).
+- There is no password reset or email verification yet.
+- Local deployment uses plain HTTP; use HTTPS and restricted CORS for any real deployment.
+
+
