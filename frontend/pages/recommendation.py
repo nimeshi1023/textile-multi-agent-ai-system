@@ -193,19 +193,3 @@ with st.expander("Knowledge base"):
         st.warning(f"Backend is not reachable at {API_URL}.")
     except httpx.HTTPStatusError as e:
         show_http_error(e, "Knowledge base unavailable")
-
-with st.expander("Search the knowledge base"):
-    query = st.text_input("Search query", placeholder="e.g. supplier delay")
-    top_k = st.slider("Results", 1, 10, 3)
-    if st.button("Search") and query.strip():
-        try:
-            found = api_post("/recommendation/search", {"query": query, "top_k": top_k})
-            if not found["results"]:
-                st.info("No matching document (all scores below the minimum).")
-            for r in found["results"]:
-                st.markdown(f"**{r['document_id']} – {r['title']}** ({r['category']}, score {r['score']:.2f})")
-                st.write(r["text"])
-        except httpx.ConnectError:
-            st.warning(f"Backend is not reachable at {API_URL}.")
-        except httpx.HTTPStatusError as e:
-            show_http_error(e, "Search failed")
