@@ -137,7 +137,7 @@ class ResourceProductionAgent:
                     supplier_id="SUP-01"
                 )
 
-        # Machine
+        # Machine details
         try:
             mch_query = text("""
                 SELECT machine_id, machine_capacity_per_day, machine_current_workload_pct, status 
