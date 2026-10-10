@@ -278,17 +278,4 @@ The tests cover the agents, the API, authentication and the retrieval layer. Use
 - There is no password reset or email verification yet.
 - Local deployment uses plain HTTP; use HTTPS and restricted CORS for any real deployment.
 
-## Team
 
-Group project for IT3041 – Information Retrieval and Web Analytics.
-
-| Name | Student ID | Role |
-|---|---|---|
-| [Name] | [ID] | [e.g. Order Analysis Agent] |
-| [Name] | [ID] | [e.g. Resource & Production Agent] |
-| [Name] | [ID] | [e.g. Delay Prediction Agent] |
-| [Name] | [ID] | [e.g. Recommendation Agent] |
-
-## License
-
-This project was created for academic purposes.
