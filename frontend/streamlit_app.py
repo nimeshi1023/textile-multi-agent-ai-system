@@ -1,8 +1,8 @@
 """
 FabricFlow entry point and router.
 
-Signed out: only Home, Sign In and Sign Up exist (no sidebar).
-Signed in:  Dashboard, New Order, Orders, Delay Prediction, Recommendations in the sidebar,
+Signed out: only Home, Sign In, Sign Up and Pricing exist (no sidebar).
+Signed in:  Dashboard, New Order, Orders, Delay Prediction, Recommendations, Pricing in the sidebar,
             plus a top bar with the manager's details and Log out.
 Run from the project folder:  streamlit run frontend/streamlit_app.py
 """
@@ -20,6 +20,7 @@ theme.inject_css()
 HOME = st.Page("views/home.py", title="Home", icon=":material/home:", url_path="home", default=True)
 SIGN_IN = st.Page("views/sign_in.py", title="Sign In", icon=":material/login:", url_path="sign_in")
 SIGN_UP = st.Page("views/sign_up.py", title="Sign Up", icon=":material/person_add:", url_path="sign_up")
+PRICING = st.Page("views/pricing.py", title="Pricing", icon=":material/sell:", url_path="pricing")
 
 DASHBOARD = st.Page("views/dashboard.py", title="Dashboard", icon=":material/space_dashboard:",
                     url_path="dashboard", default=True)
@@ -41,7 +42,7 @@ if status == "down":
 goto = st.session_state.pop("ff_goto", None)
 
 if manager:
-    page = st.navigation([DASHBOARD, NEW_ORDER, ORDERS, DELAY, RECOMMENDATIONS], position="sidebar")
+    page = st.navigation([DASHBOARD, NEW_ORDER, ORDERS, DELAY, RECOMMENDATIONS, PRICING], position="sidebar")
     if goto == "dashboard":
         st.switch_page(DASHBOARD)
     layout.render_top_bar(manager)
@@ -50,7 +51,7 @@ else:
     # No sidebar when signed out: the navigation is hidden and nothing is written to st.sidebar,
     # so Streamlit does not draw one. (No CSS hiding here: a hide rule could survive the
     # redirect after sign-in and keep the sidebar invisible.)
-    page = st.navigation([HOME, SIGN_IN, SIGN_UP], position="hidden")
+    page = st.navigation([HOME, SIGN_IN, SIGN_UP, PRICING], position="hidden")
     if goto == "home":
         st.switch_page(HOME)
     if goto == "sign_in":

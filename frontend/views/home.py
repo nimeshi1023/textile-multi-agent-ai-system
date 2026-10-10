@@ -57,7 +57,7 @@ st.markdown('<div id="top"></div>', unsafe_allow_html=True)
 brand, links, sign_in, sign_up = st.columns([3, 3.4, 1.1, 1.1], vertical_alignment="center")
 brand.markdown(theme.brand_title(), unsafe_allow_html=True)
 links.markdown('<div class="ff-nav-links"><a href="#top">Home</a><a href="#features">Features</a>'
-               '<a href="#how-it-works">How it works</a></div>', unsafe_allow_html=True)
+               '<a href="#how-it-works">How it works</a><a href="pricing" target="_self">Pricing</a></div>', unsafe_allow_html=True)
 if sign_in.button("Sign In", key="home_top_signin", width="stretch"):
     st.switch_page("views/sign_in.py")
 if sign_up.button("Sign Up", key="home_top_signup", type="primary", width="stretch"):
@@ -103,6 +103,10 @@ tiles = [("order", "Order Management"), ("factory", "Resource Check"), ("alert",
          ("bulb", "Recommendations"), ("book", "Knowledge Base"), ("user_check", "Human Approval")]
 for column, (icon, label) in zip(st.columns(6), tiles):
     column.markdown(theme.info_tile(icon, label), unsafe_allow_html=True)
+
+_, pricing_col, _ = st.columns([1.6, 1.2, 1.6])
+if pricing_col.button("See plans & pricing", key="home_pricing", width="stretch"):
+    st.switch_page("views/pricing.py")
 
 st.markdown('<div class="ff-motto">AI recommends. <span>The manager decides.</span></div>', unsafe_allow_html=True)
 st.markdown('<div class="ff-footer-line">© FabricFlow · Textile Multi Agent AI · '
