@@ -258,7 +258,7 @@ class ResourceProductionAgent:
         order = data['order']
         mch = data.get('machine')
         
-        # Template Fallback
+        # Template fallback
         mch_cap = mch.machine_capacity_per_day if mch else 0
         mch_stat = mch.status if mch else "Unavailable"
         mat_req = calcs.material_required
